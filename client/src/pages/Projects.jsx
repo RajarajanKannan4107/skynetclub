@@ -21,9 +21,9 @@ export default function Projects() {
       try {
         const res = await getProjects();
         if (res.success && Array.isArray(res.data)) {
-          // Only show completed/published projects
+          // Show completed, published, and in-progress projects
           const published = res.data.filter(
-            (p) => p.status === 'completed' || p.status === 'published'
+            (p) => p.status === 'completed' || p.status === 'published' || p.status === 'in_progress'
           );
           setProjects(published);
         }
@@ -99,7 +99,15 @@ export default function Projects() {
               >
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <Badge label={proj.status === 'completed' ? 'Completed' : 'Published'} />
+                    <Badge
+                      label={
+                        proj.status === 'completed'
+                          ? 'Completed'
+                          : proj.status === 'in_progress'
+                          ? 'In Progress'
+                          : 'Published'
+                      }
+                    />
                   </div>
                   <h3 className="text-lg font-bold text-text-primary">{proj.title}</h3>
                   <p className="text-text-muted text-sm leading-relaxed line-clamp-3">
