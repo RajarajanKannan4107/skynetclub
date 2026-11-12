@@ -4,7 +4,8 @@
  * Never exposes service-role keys.
  */
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || '/api/v1';
+const rawBase = import.meta.env.VITE_API_BASE_URL || '/api/v1';
+const API_BASE = rawBase.trim().replace(/\/+$/, '');
 
 async function request(endpoint, options = {}) {
   const headers = { ...options.headers };

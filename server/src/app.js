@@ -55,6 +55,14 @@ if (!config.isTest) {
   app.use(morgan('dev'));
 }
 
+// URL Normalization (defensively handle any malformed URL whitespace from client env vars)
+app.use((req, res, next) => {
+  if (req.url) {
+    req.url = req.url.replace(/\/api\/v1(?:\s|%20)+\//g, '/api/v1/');
+  }
+  next();
+});
+
 // System Health Check
 app.get('/api/v1/health', (req, res) => {
   res.json({
